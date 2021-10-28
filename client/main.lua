@@ -1,3 +1,4 @@
+local QBCore = exports['qb-core']:GetCoreObject()
 local inside = false
 local currentHouse = nil
 local closestHouse
@@ -32,18 +33,18 @@ function DrawText3Ds(x, y, z, text)
     ClearDrawOrigin()
 end
 
+
 Citizen.CreateThread(function()
     Citizen.Wait(500)
     requiredItems = {
-        [1] = {name = QBCore.Shared.Items["lockpick"]["name"], image = QBCore.Shared.Items["lockpick"]["image"]},
-        [2] = {name = QBCore.Shared.Items["screwdriverset"]["name"], image = QBCore.Shared.Items["screwdriverset"]["image"]},
+    [1] = {name = QBCore.Shared.Items["lockpick"]["name"], image = QBCore.Shared.Items["lockpick"]["image"]},
+    [2] = {name = QBCore.Shared.Items["screwdriverset"]["name"], image = QBCore.Shared.Items["screwdriverset"]["image"]},
     }
     while true do
         inRange = false
         local PlayerPed = PlayerPedId()
         local PlayerPos = GetEntityCoords(PlayerPed)
         closestHouse = nil
-
         if QBCore ~= nil then
             local hours = GetClockHours()
             if hours >= Config.MinimumTime or hours <= Config.MaximumTime then
@@ -203,7 +204,7 @@ end
 RegisterNetEvent('lockpicks:UseLockpick')
 AddEventHandler('lockpicks:UseLockpick', function(isAdvanced)
     local hours = GetClockHours()
-    if hours >= Config.MinimumTime or hours <= Config.MaximumTime then
+        if hours >= Config.MinimumTime or hours <= Config.MaximumTime then
         usingAdvanced = isAdvanced
         if usingAdvanced then
             if closestHouse ~= nil then
@@ -229,6 +230,7 @@ AddEventHandler('lockpicks:UseLockpick', function(isAdvanced)
                         if CurrentCops >= Config.MinimumHouseRobberyPolice then
                             if not Config.Houses[closestHouse]["opened"] then
                                 PoliceCall()
+                                print("I AM RUNNING NOW")
                                 TriggerEvent('qb-lockpick:client:openLockpick', lockpickFinish)
                                 if math.random(1, 100) <= 85 and not IsWearingHandshoes() then
                                     local pos = GetEntityCoords(PlayerPedId())
